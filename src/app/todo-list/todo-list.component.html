@@ -1,35 +1,26 @@
-<!-- forma ngForm -->
-<p>Todo-list works!</p>
-<h2>Lista de Tareas</h2>
-<div class = "input-container">
-    <input type="text" [(ngModel)]="newTask" placeholder="Escribe una nueva tarea" (keyup.enter)="addTask()">
-    <!--PermiteagregarconEnter-->
-    <button (click)="addTask()">Agregar</button>
-</div>
-<h2>Mis Tareas</h2>
-<ul> <!--difetencia de agregar estilos--> 
-    <li *ngFor="let task of tasks; let i = index">
-        {{ task }}
-        <button (click)="removeTask(i)">Eliminar</button>
-    </li>
+<mat-card>
+  <mat-card-title>Lista de Tareas</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let todo of todos">
+        <mat-checkbox [checked]="todo.completed">{{ todo.title }}</mat-checkbox>
+      </mat-list-item>
+    </mat-list>
 
-</ul>
+    <mat-divider></mat-divider>
 
-<!-- Forma @for --><!-- <p>Todo-list works!</p> -->
-<h2>Lista de Tareas</h2>
-<h2>Mis Tareas</h2>
-<!-- Formulario para agregar tareas -->
-<div class="input-container">
-    <input type="text" [(ngModel)]="newTask" placeholder="Nueva tarea" (keyup.enter)="addTask()">
-    <button (click)="addTask()">Agregar</button>
-</div>
-
-<!-- Lista de tareas con botones de eliminar -->
-<ul class="task-list">
-    @for (task of tasks; track $index; let i = $index) {
-    <li>
-        <span>{{ task }}</span>
-        <button (click)="removeTask(i)" class="delete-btn">Eliminar</button>
-    </li>
-    }
-</ul>
+    <form (ngSubmit)="addTodo()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nueva Tarea</mat-label>
+        <input matInput [formControl]="newTodoControl">
+        <mat-error *ngIf="newTodoControl.hasError('required')">
+          La tarea es requerida
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="newTodoControl.invalid">
+        Agregar
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+<app-todo-list></app-todo-list>
